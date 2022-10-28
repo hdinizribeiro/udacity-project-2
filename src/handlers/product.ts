@@ -1,12 +1,27 @@
 import express, { Request, Response } from 'express';
 import { ProductStore } from '../models/product';
+import * as yup from 'yup';
+import { validate } from '../middlewares/validation/validationMiddleware';
 
 const store = new ProductStore();
 
+const createProductSchema = yup.object().shape({
+  body: yup.object({
+    name: yup.string().required().max(200),
+    price: yup.number().required()
+  })
+});
+
+const showProductSchema = yup.object().shape({
+  params: yup.object({
+    id: yup.number().integer().moreThan(0)
+  })
+});
+
 const productRoutes = (app: express.Application) => {
   app.get('/products', index);
-  app.post('/products', create);
-  app.get('/products/:id', show);
+  app.post('/products', validate(createProductSchema), create);
+  app.get('/products/:id', validate(showProductSchema), show);
 };
 
 const index = async (_req: Request, res: Response) => {

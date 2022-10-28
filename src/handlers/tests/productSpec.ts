@@ -1,5 +1,6 @@
+import exp from 'constants';
 import supertest from 'supertest';
-import { Product } from '../../models/product';
+import { ApiError, Reasons } from '../../middlewares/errorMiddleare/apiError';
 import app from '../../server';
 
 const request = supertest(app);
@@ -31,6 +32,23 @@ describe('Products endpoint tests', () => {
     // Assert
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(newProduct);
+  });
+
+  fit('Should return 400 when /products/:id receives invalid id', async () => {
+    // Arrange & Act
+    const response = await request.get(`/products/0`);
+
+    // Assert
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual(
+      new ApiError(
+        'params.id must be greater than 0',
+        400,
+        Reasons.InvalidRequest
+      )
+        .addData('validation', ['params.id must be greater than 0'])
+        .toJson()
+    );
   });
 });
 
