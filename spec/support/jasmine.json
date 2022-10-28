@@ -4,7 +4,7 @@
     "../**/tests/*[sS]pec.js"
   ],
   "helpers": [
-    "**/helpers/**/*.js"
+    "../**/testHelpers/**/*.js"
   ],
   "reporters": [
     {

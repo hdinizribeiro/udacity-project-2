@@ -1,13 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import productRoutes from './handlers/product';
-import dotenv from 'dotenv';
 import cors from 'cors';
 
 const app: express.Application = express();
 const address = '0.0.0.0:3000';
-
-dotenv.config();
 
 const corsOptions: cors.CorsOptions = {
   origin: 'http://localhost',
