@@ -7,9 +7,14 @@ export type Product = {
 };
 
 export class ProductStore {
-  async show(id: number) {
+  async show(id: number): Promise<Product | null> {
     const sql = 'SELECT Id, Name, Price FROM Products WHERE Id=$1';
     const result = await Client.execute(sql, [id]);
+
+    if (result.rows.length == 0) {
+      return null;
+    }
+
     return result.rows[0];
   }
 

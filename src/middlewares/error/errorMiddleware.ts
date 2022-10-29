@@ -3,7 +3,7 @@ import { ApiError } from './apiError';
 
 const defaultErrorMiddleware: ErrorRequestHandler = (
   err: express.ErrorRequestHandler,
-  req: express.Request,
+  _req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ): void => {

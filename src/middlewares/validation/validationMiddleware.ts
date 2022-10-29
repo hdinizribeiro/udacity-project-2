@@ -1,6 +1,6 @@
 import express from 'express';
 import * as yup from 'yup';
-import { ApiError, Reasons } from '../errorMiddleare/apiError';
+import { ApiError, Reasons } from '../error/apiError';
 
 export const validate =
   (schema: yup.BaseSchema) =>

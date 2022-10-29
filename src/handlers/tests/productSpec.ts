@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import { ApiError, Reasons } from '../../middlewares/errorMiddleare/apiError';
+import { ApiError, Reasons } from '../../middlewares/error/apiError';
 import app from '../../server';
 
 const request = supertest(app);
@@ -31,6 +31,14 @@ describe('Products endpoint tests', () => {
     // Assert
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(newProduct);
+  });
+
+  it('Should return 404 and one product on GET /products/:id whan the product does not exist', async () => {
+    // Arrange & Act
+    const response = await request.get(`/products/1`);
+
+    // Assert
+    expect(response.statusCode).toBe(404);
   });
 
   it('Should return 201 on POST /products', async () => {

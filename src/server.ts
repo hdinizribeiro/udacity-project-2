@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import productRoutes from './handlers/product';
 import cors from 'cors';
-import { defaultErrorMiddleware } from './middlewares/errorMiddleare/errorMiddleware';
+import { defaultErrorMiddleware } from './middlewares/error/errorMiddleware';
 
 const app: express.Application = express();
 const address = '0.0.0.0:3000';

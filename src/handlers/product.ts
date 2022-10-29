@@ -1,7 +1,8 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { ProductStore } from '../models/product';
 import * as yup from 'yup';
 import { validate } from '../middlewares/validation/validationMiddleware';
+import { ApiError, Reasons } from '../middlewares/error/apiError';
 
 const store = new ProductStore();
 
@@ -38,8 +39,14 @@ const create = async (req: Request, res: Response) => {
   res.json(product);
 };
 
-const show = async (req: Request, res: Response) => {
+const show = async (req: Request, res: Response, next: NextFunction) => {
   const product = await store.show(parseInt(req.params.id));
+
+  if (!product) {
+    next(new ApiError('Product does not exist', 404, Reasons.ResourceNotFound));
+    return;
+  }
+
   res.json(product);
 };
 

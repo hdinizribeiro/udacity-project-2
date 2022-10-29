@@ -41,5 +41,6 @@ export class ApiError extends Error {
 }
 
 export enum Reasons {
-  InvalidRequest = 'Invalidrequest'
+  InvalidRequest = 'Invalidrequest',
+  ResourceNotFound = 'ResourceNotFound'
 }
