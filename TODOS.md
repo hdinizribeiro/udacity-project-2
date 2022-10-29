@@ -1,6 +1,8 @@
 Readme.ms
     [] Include scripts and steps to up and run the app with postgres
-    [] Include validations on post api's
+    [v] Include validations on post api's
+    [] Include token generation
+    [v] Enable cors for all endpoints
 
 Product api's
     [] Create Index api
