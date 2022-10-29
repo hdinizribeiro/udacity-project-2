@@ -1,4 +1,3 @@
-import exp from 'constants';
 import supertest from 'supertest';
 import { ApiError, Reasons } from '../../middlewares/errorMiddleare/apiError';
 import app from '../../server';
@@ -6,7 +5,7 @@ import app from '../../server';
 const request = supertest(app);
 
 describe('Products endpoint tests', () => {
-  it('Should return 200 and a list of products on /products endpoint', async () => {
+  it('Should return 200 and a list of products on GET /products endpoint', async () => {
     // Arrange
     const newProduct = (
       await request.post('/products').send({ name: 'new product', price: 15 })
@@ -20,7 +19,7 @@ describe('Products endpoint tests', () => {
     expect(response.body).toEqual([newProduct]);
   });
 
-  it('Should return 200 and one product on /products/:id', async () => {
+  it('Should return 200 and one product on GET /products/:id', async () => {
     // Arrange
     const newProduct = (
       await request.post('/products').send({ name: 'new product', price: 15 })
@@ -34,7 +33,17 @@ describe('Products endpoint tests', () => {
     expect(response.body).toEqual(newProduct);
   });
 
-  fit('Should return 400 when /products/:id receives invalid id', async () => {
+  it('Should return 201 on POST /products', async () => {
+    // Arrange & Act
+    const response = await request
+      .post('/products')
+      .send({ name: 'new-product', price: 10 });
+
+    // Assert
+    expect(response.statusCode).toBe(201);
+  });
+
+  it('Should return 400 when GET /products/:id receives invalid id', async () => {
     // Arrange & Act
     const response = await request.get(`/products/0`);
 
@@ -50,6 +59,25 @@ describe('Products endpoint tests', () => {
         .toJson()
     );
   });
-});
 
-//[] Should return 200 and a list of products on /products endpoint
+  it('Should return 400 POST /products receives invalid values', async () => {
+    // Arrange & Act
+    const response = await request
+      .post('/products')
+      .send({ name: '', price: 'test' });
+
+    // Assert
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual(
+      new ApiError(
+        'body.price must be a `number` type, but the final value was: `NaN` (cast from the value `"test"`).',
+        400,
+        Reasons.InvalidRequest
+      )
+        .addData('validation', [
+          'body.price must be a `number` type, but the final value was: `NaN` (cast from the value `"test"`).'
+        ])
+        .toJson()
+    );
+  });
+});

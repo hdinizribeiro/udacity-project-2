@@ -34,7 +34,7 @@ const create = async (req: Request, res: Response) => {
     name: req.body.name,
     price: req.body.price
   });
-
+  res.status(201);
   res.json(product);
 };
 
