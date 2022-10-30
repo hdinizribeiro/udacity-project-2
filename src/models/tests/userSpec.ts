@@ -42,7 +42,7 @@ describe('Use Store Tests', () => {
     expect(insertedUser).toEqual(user);
   });
 
-  fit('Email should be unique', async () => {
+  it('Email should be unique', async () => {
     // Arrange
     await sutUserStore.create({
       firstname: 'new',
