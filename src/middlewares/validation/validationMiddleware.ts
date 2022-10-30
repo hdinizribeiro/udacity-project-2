@@ -10,20 +10,26 @@ export const validate =
     next: express.NextFunction
   ) => {
     try {
-      await schema.validate({
-        body: req.body,
-        query: req.query,
-        params: req.params
-      });
+      await schema.validate(
+        {
+          body: req.body,
+          query: req.query,
+          params: req.params
+        },
+        { abortEarly: false }
+      );
       return next();
     } catch (err) {
       if (err instanceof yup.ValidationError) {
         next(
-          new AppError(err.message, 400, Reasons.InvalidRequest).addData(
-            'validation',
-            err.errors
-          )
+          new AppError(
+            'Validation errors',
+            400,
+            Reasons.InvalidRequest
+          ).addData({ errors: err.errors })
         );
+
+        return;
       }
 
       next(err);

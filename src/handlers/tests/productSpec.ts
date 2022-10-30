@@ -1,5 +1,4 @@
 import supertest from 'supertest';
-import { AppError, Reasons } from '../../middlewares/error/appError';
 import app from '../../server';
 
 const request = supertest(app);
@@ -57,15 +56,12 @@ describe('Products endpoint tests', () => {
 
     // Assert
     expect(response.statusCode).toBe(400);
-    expect(response.body).toEqual(
-      new AppError(
-        'params.id must be greater than 0',
-        400,
-        Reasons.InvalidRequest
-      )
-        .addData('validation', ['params.id must be greater than 0'])
-        .toJson()
-    );
+    expect(response.body).toEqual({
+      message: 'Validation errors',
+      reason: 'Invalidrequest',
+      data: [{ errors: ['params.id must be greater than 0'] }],
+      statusCode: 400
+    });
   });
 
   it('Should return 400 POST /products receives invalid values', async () => {
@@ -76,16 +72,18 @@ describe('Products endpoint tests', () => {
 
     // Assert
     expect(response.statusCode).toBe(400);
-    expect(response.body).toEqual(
-      new AppError(
-        'body.price must be a `number` type, but the final value was: `NaN` (cast from the value `"test"`).',
-        400,
-        Reasons.InvalidRequest
-      )
-        .addData('validation', [
-          'body.price must be a `number` type, but the final value was: `NaN` (cast from the value `"test"`).'
-        ])
-        .toJson()
-    );
+    expect(response.body).toEqual({
+      message: 'Validation errors',
+      reason: 'Invalidrequest',
+      data: [
+        {
+          errors: [
+            'body.name is a required field',
+            'body.price must be a `number` type, but the final value was: `NaN` (cast from the value `"test"`).'
+          ]
+        }
+      ],
+      statusCode: 400
+    });
   });
 });

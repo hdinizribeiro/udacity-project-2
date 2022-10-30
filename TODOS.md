@@ -4,6 +4,7 @@ Readme.ms
     [] Include token generation
     [v] Enable cors for all endpoints
     [] Inform that the email was inclued on the user data shape
+    [] Include authenticate endpint, it's not a good idea to expose password hash in an endpoint.
 
 Product api's
     [] Create Index api

@@ -25,8 +25,8 @@ export class AppError extends Error {
     return this._data;
   }
 
-  addData(key: string, value: unknown): AppError {
-    this._data.push({ key, value });
+  addData(data: Record<string, unknown>): AppError {
+    this._data.push(data);
     return this;
   }
 

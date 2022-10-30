@@ -3,6 +3,7 @@ import { ProductStore } from '../models/product';
 import * as yup from 'yup';
 import { validate } from '../middlewares/validation/validationMiddleware';
 import { AppError, Reasons } from '../middlewares/error/appError';
+import { routeNumericIdSchema } from '../utilities/validatorSchemas';
 
 const store = new ProductStore();
 
@@ -13,16 +14,10 @@ const createProductSchema = yup.object().shape({
   })
 });
 
-const showProductSchema = yup.object().shape({
-  params: yup.object({
-    id: yup.number().integer().moreThan(0)
-  })
-});
-
 const productRoutes = (app: express.Application) => {
   app.get('/products', index);
   app.post('/products', validate(createProductSchema), create);
-  app.get('/products/:id', validate(showProductSchema), show);
+  app.get('/products/:id', validate(routeNumericIdSchema), show);
 };
 
 const index = async (_req: Request, res: Response) => {
