@@ -4,5 +4,5 @@ CREATE TABLE Users
     FirstName VARCHAR(200), 
     LastName VARCHAR(200),
     Password VARCHAR,
-    Email VARCHAR(100)
+    Email VARCHAR(100) UNIQUE
 );

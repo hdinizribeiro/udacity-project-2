@@ -52,7 +52,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## Database structure
 
-### Product:
+### Products:
 
 | Column | Type         | Constraint |
 | ------ | ------------ | ---------- |
@@ -60,4 +60,12 @@ These are the notes from a meeting with the frontend developer that describe wha
 | Name   | Varchar(200) |            |
 | Price  | Numeric      |            |
 
+### Users:
 
+| Column    | Type         | Constraint |
+| --------- | ------------ | ---------- |
+| Id        | Serial       | PrimaryKey |
+| FirstName | Varchar(200) |            |
+| LastName  | Varchar(200) |            |
+| Password  | Varchar      |            |
+| Email     | Varchar(100) | UNIQUE     |
