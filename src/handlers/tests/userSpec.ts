@@ -2,7 +2,16 @@ import supertest from 'supertest';
 import app from '../../server';
 import jwt from 'jsonwebtoken';
 
-const request = supertest(app);
+const request = supertest.agent(app);
+
+beforeAll(async () => {
+  const token = await jwt.sign(
+    { firstname: 'user', lastname: 'test', email: 'user@email.comm' },
+    process.env.TOKEN_SECRET ?? ''
+  );
+
+  request.set('Authorization', `bearer ${token}`);
+});
 
 describe('Users endpoint tests', () => {
   it('Should return 200 and a list of users on GET /users endpoint', async () => {

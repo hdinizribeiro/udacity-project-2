@@ -19,7 +19,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 - Index [token required]: GET /users
 - Show [token required]: GET /users/:id
 - Create N[token required] POST /users
-- Authenticate: 
+- Authenticate: POST /users/authenticate
 
 #### Orders
 

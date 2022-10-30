@@ -5,6 +5,7 @@ import { AppError, Reasons } from '../middlewares/error/appError';
 import { UserStore } from '../models/user';
 import { routeNumericIdSchema } from '../utilities/validatorSchemas';
 import jwt from 'jsonwebtoken';
+import { jwtValidationMiddleware } from '../middlewares/validation/jwtValidationMiddleware';
 
 const createUserSchema = yup.object().shape({
   body: yup.object({
@@ -25,9 +26,19 @@ const authenticateScheme = yup.object().shape({
 const store = new UserStore();
 
 const userRoutes = (app: express.Application) => {
-  app.get('/users', index);
-  app.post('/users', validate(createUserSchema), create);
-  app.get('/users/:id', validate(routeNumericIdSchema), show);
+  app.get('/users', jwtValidationMiddleware, index);
+  app.post(
+    '/users',
+    jwtValidationMiddleware,
+    validate(createUserSchema),
+    create
+  );
+  app.get(
+    '/users/:id',
+    jwtValidationMiddleware,
+    validate(routeNumericIdSchema),
+    show
+  );
   app.post('/users/authenticate', validate(authenticateScheme), authenticate);
 };
 
