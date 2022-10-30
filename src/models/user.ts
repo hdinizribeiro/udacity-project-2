@@ -55,6 +55,25 @@ export class UserStore {
     return result.rows;
   }
 
+  async authenticate(email: string, password: string): Promise<User> {
+    const sql =
+      'SELECT Id, FirstName, LastName, Email, Password FROM Users WHERE Email=$1';
+    const result = await Client.execute<User>(sql, [email]);
+
+    if (result.rows.length === 0) {
+      throw new AppError('Invalid user', 401, Reasons.Unauthorized);
+    }
+
+    const user = result.rows[0];
+    const authenticated = await bcrypt.compare(password + peper, user.password);
+
+    if (!authenticated) {
+      throw new AppError('Invalid user', 401, Reasons.Unauthorized);
+    }
+    user.password = '';
+    return user;
+  }
+
   private async emailExists(email: string): Promise<boolean> {
     const sql = 'SELECT 1 FROM Users WHERE Email=$1 LIMIT 1';
 

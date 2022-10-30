@@ -1,5 +1,6 @@
 import supertest from 'supertest';
 import app from '../../server';
+import jwt from 'jsonwebtoken';
 
 const request = supertest(app);
 
@@ -102,5 +103,54 @@ describe('Users endpoint tests', () => {
       ],
       statusCode: 400
     });
+  });
+
+  it('Should return valid jwt token on POST /users/authenticate if the password is correct', async () => {
+    // Arrange
+    const newUser = (
+      await request.post('/users').send({
+        firstname: 'new',
+        lastname: 'user',
+        email: 'any@email.com',
+        password: 'pass'
+      })
+    ).body;
+
+    // Act
+    const response = await request
+      .post('/users/authenticate')
+      .send({ email: newUser.email, password: 'pass' });
+
+    // Assert
+    expect(response.statusCode).toBe(200);
+    const decodedToken = (await jwt.verify(
+      response.body.token,
+      process.env.TOKEN_SECRET ?? ''
+    )) as jwt.JwtPayload;
+
+    expect(decodedToken).toEqual({
+      firstname: newUser.firstname,
+      lastname: newUser.lastname,
+      email: newUser.email,
+      iat: decodedToken.iat
+    });
+  });
+
+  it('Should return 401 on POST /users/authenticate if the password is wrong', async () => {
+    // Arrange
+    await request.post('/users').send({
+      firstname: 'new',
+      lastname: 'user',
+      email: 'any@email.com',
+      password: 'pass'
+    });
+
+    // Act
+    const response = await request
+      .post('/users/authenticate')
+      .send({ email: 'any@email.com', password: 'pass1' });
+
+    // Assert
+    expect(response.statusCode).toBe(401);
   });
 });

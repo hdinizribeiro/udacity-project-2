@@ -43,5 +43,6 @@ export class AppError extends Error {
 export enum Reasons {
   InvalidRequest = 'Invalidrequest',
   ResourceNotFound = 'ResourceNotFound',
-  ResourceAlreadyExists = 'ResourceAlreadyExists'
+  ResourceAlreadyExists = 'ResourceAlreadyExists',
+  Unauthorized = 'Unauthorized'
 }

@@ -4,6 +4,7 @@ import { validate } from '../middlewares/validation/validationMiddleware';
 import { AppError, Reasons } from '../middlewares/error/appError';
 import { UserStore } from '../models/user';
 import { routeNumericIdSchema } from '../utilities/validatorSchemas';
+import jwt from 'jsonwebtoken';
 
 const createUserSchema = yup.object().shape({
   body: yup.object({
@@ -14,12 +15,20 @@ const createUserSchema = yup.object().shape({
   })
 });
 
+const authenticateScheme = yup.object().shape({
+  body: yup.object({
+    password: yup.string().required(),
+    email: yup.string().required().email()
+  })
+});
+
 const store = new UserStore();
 
 const userRoutes = (app: express.Application) => {
   app.get('/users', index);
   app.post('/users', validate(createUserSchema), create);
   app.get('/users/:id', validate(routeNumericIdSchema), show);
+  app.post('/users/authenticate', validate(authenticateScheme), authenticate);
 };
 
 const index = async (_req: Request, res: Response) => {
@@ -48,6 +57,29 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
   }
 
   res.json(user);
+};
+
+const tokenSecret = process.env.TOKEN_SECRET ?? '';
+const authenticate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = await store.authenticate(req.body.email, req.body.password);
+    res.status(200).json({
+      token: jwt.sign(
+        {
+          firstname: user.firstname,
+          lastname: user.lastname,
+          email: user.email
+        },
+        tokenSecret
+      )
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 export default userRoutes;

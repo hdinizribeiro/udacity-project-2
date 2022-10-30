@@ -107,4 +107,51 @@ describe('Use Store Tests', () => {
 
     expect(comparisonResult).toBe(true);
   });
+
+  it('Should authenticate user with correct password', async () => {
+    // Arrange
+    const user: User = {
+      firstname: 'new',
+      lastname: 'user',
+      password: 'pass',
+      email: 'any@email'
+    };
+    const insertedUser = await sutUserStore.create(user);
+
+    // Act
+    const promise = sutUserStore.authenticate(user.email, user.password);
+
+    // Assert
+    user.id = insertedUser.id;
+    user.password = '';
+    await expectAsync(promise).toBeResolvedTo(user);
+  });
+
+  it('Should throw error for wrong password', async () => {
+    // Arrange
+    await sutUserStore.create({
+      firstname: 'new',
+      lastname: 'user',
+      password: 'pass',
+      email: 'any@email'
+    });
+
+    // Act
+    const promise = sutUserStore.authenticate('any@email', 'other_password');
+
+    // Assert
+    await expectAsync(promise).toBeRejectedWith(
+      new AppError('Invalid user', 401, Reasons.Unauthorized)
+    );
+  });
+
+  it('Should throw error for not existing user', async () => {
+    // Arrange & Act
+    const promise = sutUserStore.authenticate('any@email', 'other_password');
+
+    // Assert
+    await expectAsync(promise).toBeRejectedWith(
+      new AppError('Invalid user', 401, Reasons.Unauthorized)
+    );
+  });
 });

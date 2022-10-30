@@ -16,9 +16,10 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### Users
 
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- Index [token required]: GET /users
+- Show [token required]: GET /users/:id
+- Create N[token required] POST /users
+- Authenticate: 
 
 #### Orders
 
