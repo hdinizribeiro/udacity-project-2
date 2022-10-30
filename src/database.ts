@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+import { Pool, QueryResult, QueryResultRow } from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
@@ -14,10 +14,13 @@ const dbClient = new Pool({
 });
 
 const Client = {
-  execute: async (sql: string, params?: unknown[]) => {
+  execute: async <T extends QueryResultRow>(
+    sql: string,
+    params?: unknown[]
+  ): Promise<QueryResult<T>> => {
     const connection = await dbClient.connect();
     try {
-      return await connection.query(sql, params);
+      return await connection.query<T>(sql, params);
     } finally {
       await connection.release();
     }

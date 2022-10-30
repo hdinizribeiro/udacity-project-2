@@ -1,5 +1,4 @@
-import exp from 'constants';
-import { ProductStore } from '../product';
+import { Product, ProductStore } from '../product';
 
 const sutProductStore = new ProductStore();
 
@@ -8,7 +7,7 @@ describe('Product Store Tests', () => {
     // Arrange
     const newProduct = await sutProductStore.create({
       name: 'Battery',
-      price: 10
+      price: '10'
     });
 
     // Act
@@ -20,21 +19,25 @@ describe('Product Store Tests', () => {
   });
 
   it('Should create a product correctly', async () => {
-    // Arrange & Act
-    const newProduct = await sutProductStore.create({
+    // Arrange
+    const product: Product = {
       name: 'New Product',
-      price: 25
-    });
+      price: '25'
+    };
+
+    // Act
+    const insertedProduct = await sutProductStore.create(product);
 
     // Assert
-    expect(newProduct.id).toBeGreaterThan(0);
+    product.id = insertedProduct.id;
+    expect(insertedProduct).toEqual(product);
   });
 
   it('Should show a prodcut', async () => {
     // Arrange
     const newProduct = await sutProductStore.create({
       name: 'New Product to show',
-      price: 35
+      price: '35'
     });
 
     //Act

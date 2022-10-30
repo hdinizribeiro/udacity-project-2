@@ -3,6 +3,7 @@ Readme.ms
     [v] Include validations on post api's
     [] Include token generation
     [v] Enable cors for all endpoints
+    [] Inform that the email was inclued on the user data shape
 
 Product api's
     [] Create Index api
