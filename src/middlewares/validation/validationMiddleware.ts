@@ -1,6 +1,6 @@
 import express from 'express';
 import * as yup from 'yup';
-import { ApiError, Reasons } from '../error/apiError';
+import { AppError, Reasons } from '../error/appError';
 
 export const validate =
   (schema: yup.BaseSchema) =>
@@ -19,7 +19,7 @@ export const validate =
     } catch (err) {
       if (err instanceof yup.ValidationError) {
         next(
-          new ApiError(err.message, 400, Reasons.InvalidRequest).addData(
+          new AppError(err.message, 400, Reasons.InvalidRequest).addData(
             'validation',
             err.errors
           )

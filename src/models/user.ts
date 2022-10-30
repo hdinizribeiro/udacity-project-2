@@ -1,5 +1,6 @@
 import Client from '../database';
 import bcrypt from 'bcrypt';
+import { AppError, Reasons } from '../middlewares/error/appError';
 
 export type User = {
   id?: number;
@@ -25,6 +26,14 @@ export class UserStore {
   }
 
   async create(user: User): Promise<User> {
+    if (await this.emailExists(user.email)) {
+      throw new AppError(
+        'Email already exists',
+        409,
+        Reasons.ResourceAlreadyExists
+      );
+    }
+
     const sql =
       'INSERT INTO Users (FirstName, LastName, Password, Email) VALUES($1, $2, $3, $4) RETURNING Id, FirstName, LastName, Email';
 
@@ -44,5 +53,13 @@ export class UserStore {
     const sql = 'SELECT Id, FirstName, LastName, Email FROM Users';
     const result = await Client.execute<User>(sql);
     return result.rows;
+  }
+
+  private async emailExists(email: string): Promise<boolean> {
+    const sql = 'SELECT 1 FROM Users WHERE Email=$1 LIMIT 1';
+
+    const result = await Client.execute<User>(sql, [email]);
+
+    return result.rows.length > 0;
   }
 }

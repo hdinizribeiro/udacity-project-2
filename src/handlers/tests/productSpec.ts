@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import { ApiError, Reasons } from '../../middlewares/error/apiError';
+import { AppError, Reasons } from '../../middlewares/error/appError';
 import app from '../../server';
 
 const request = supertest(app);
@@ -58,7 +58,7 @@ describe('Products endpoint tests', () => {
     // Assert
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual(
-      new ApiError(
+      new AppError(
         'params.id must be greater than 0',
         400,
         Reasons.InvalidRequest
@@ -77,7 +77,7 @@ describe('Products endpoint tests', () => {
     // Assert
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual(
-      new ApiError(
+      new AppError(
         'body.price must be a `number` type, but the final value was: `NaN` (cast from the value `"test"`).',
         400,
         Reasons.InvalidRequest

@@ -1,6 +1,7 @@
 import Client from '../../database';
 import { User, UserStore } from '../user';
 import bcrypt from 'bcrypt';
+import { AppError, Reasons } from '../../middlewares/error/appError';
 
 const sutUserStore = new UserStore();
 
@@ -39,6 +40,29 @@ describe('Use Store Tests', () => {
     insertedUser.password = '';
     user.password = '';
     expect(insertedUser).toEqual(user);
+  });
+
+  fit('Email should be unique', async () => {
+    // Arrange
+    await sutUserStore.create({
+      firstname: 'new',
+      lastname: 'user',
+      password: 'pass',
+      email: 'one@email'
+    });
+
+    // Act
+    const promise = sutUserStore.create({
+      firstname: 'second',
+      lastname: 'user',
+      password: 'pass_second',
+      email: 'one@email'
+    });
+
+    // Assert
+    await expectAsync(promise).toBeRejectedWith(
+      new AppError('Email already exists', 409, Reasons.ResourceAlreadyExists)
+    );
   });
 
   it('Should show a user', async () => {

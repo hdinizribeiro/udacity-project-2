@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { ProductStore } from '../models/product';
 import * as yup from 'yup';
 import { validate } from '../middlewares/validation/validationMiddleware';
-import { ApiError, Reasons } from '../middlewares/error/apiError';
+import { AppError, Reasons } from '../middlewares/error/appError';
 
 const store = new ProductStore();
 
@@ -43,7 +43,7 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
   const product = await store.show(parseInt(req.params.id));
 
   if (!product) {
-    next(new ApiError('Product does not exist', 404, Reasons.ResourceNotFound));
+    next(new AppError('Product does not exist', 404, Reasons.ResourceNotFound));
     return;
   }
 

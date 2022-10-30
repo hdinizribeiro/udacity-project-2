@@ -1,5 +1,5 @@
 import express, { ErrorRequestHandler } from 'express';
-import { ApiError } from './apiError';
+import { AppError } from './appError';
 
 const defaultErrorMiddleware: ErrorRequestHandler = (
   err: express.ErrorRequestHandler,
@@ -7,7 +7,7 @@ const defaultErrorMiddleware: ErrorRequestHandler = (
   res: express.Response,
   next: express.NextFunction
 ): void => {
-  if (err instanceof ApiError) {
+  if (err instanceof AppError) {
     res.status(err.statusCode).json(err.toJson());
   } else {
     res.sendStatus(500);

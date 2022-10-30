@@ -1,4 +1,4 @@
-export class ApiError extends Error {
+export class AppError extends Error {
   private readonly _statusCode: number;
   private readonly _reason: Reasons;
   private readonly _data: unknown[] = [];
@@ -25,7 +25,7 @@ export class ApiError extends Error {
     return this._data;
   }
 
-  addData(key: string, value: unknown): ApiError {
+  addData(key: string, value: unknown): AppError {
     this._data.push({ key, value });
     return this;
   }
@@ -42,5 +42,6 @@ export class ApiError extends Error {
 
 export enum Reasons {
   InvalidRequest = 'Invalidrequest',
-  ResourceNotFound = 'ResourceNotFound'
+  ResourceNotFound = 'ResourceNotFound',
+  ResourceAlreadyExists = 'ResourceAlreadyExists'
 }
