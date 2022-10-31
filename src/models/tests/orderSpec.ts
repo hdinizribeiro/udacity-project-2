@@ -8,7 +8,7 @@ const productStore = new ProductStore();
 const userStore = new UserStore();
 
 describe('Product Store Tests', () => {
-  fit('Should user current orders', async () => {
+  it('Should user current orders', async () => {
     // Arrange
     const product1 = await productStore.create({
       name: 'product 1',
@@ -40,7 +40,7 @@ describe('Product Store Tests', () => {
     );
 
     // Act
-    const result = await sutOrderStore.userOrders(user.id ?? 0);
+    const result = await sutOrderStore.userOrders(user.id ?? 0, order.status);
 
     // Assert
     expect(result).toEqual([

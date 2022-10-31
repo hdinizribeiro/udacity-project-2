@@ -14,7 +14,7 @@ export type Order = {
 };
 
 export class OrderStore {
-  async userOrders(userId: number): Promise<Order[]> {
+  async userOrders(userId: number, status: OrderStatus): Promise<Order[]> {
     const sql = `
       SELECT o.Id, o.UserId, o.Quantity, o.Status, op.ProductId 
       FROM Orders o
@@ -22,7 +22,7 @@ export class OrderStore {
       WHERE o.UserId = $1
       AND o.Status = $2`;
 
-    const dbRows = await Client.execute(sql, [userId, OrderStatus.Active]);
+    const dbRows = await Client.execute(sql, [userId, status]);
 
     const orders: Order[] = [];
 

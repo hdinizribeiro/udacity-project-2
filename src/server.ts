@@ -4,6 +4,7 @@ import productRoutes from './handlers/product';
 import cors from 'cors';
 import { defaultErrorMiddleware } from './middlewares/error/errorMiddleware';
 import userRoutes from './handlers/user';
+import orderRoutes from './handlers/order';
 
 const app: express.Application = express();
 const address = '0.0.0.0:3000';
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 
 productRoutes(app);
 userRoutes(app);
+orderRoutes(app);
 app.use(defaultErrorMiddleware);
 
 app.listen(3000, function () {
