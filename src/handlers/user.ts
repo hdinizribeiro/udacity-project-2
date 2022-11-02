@@ -27,12 +27,7 @@ const store = new UserStore();
 
 const userRoutes = (app: express.Application) => {
   app.get('/users', jwtValidationMiddleware, index);
-  app.post(
-    '/users',
-    jwtValidationMiddleware,
-    validate(createUserSchema),
-    create
-  );
+  app.post('/users', validate(createUserSchema), create);
   app.get(
     '/users/:id',
     jwtValidationMiddleware,
@@ -42,32 +37,43 @@ const userRoutes = (app: express.Application) => {
   app.post('/users/authenticate', validate(authenticateScheme), authenticate);
 };
 
-const index = async (_req: Request, res: Response) => {
-  const users = await store.index();
-  res.json(users);
+const index = async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const users = await store.index();
+    res.json(users);
+  } catch (err) {
+    next(err);
+  }
 };
 
-const create = async (req: Request, res: Response) => {
-  const user = await store.create({
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    email: req.body.email,
-    password: req.body.password
-  });
+const create = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await store.create({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      email: req.body.email,
+      password: req.body.password
+    });
 
-  res.status(201);
-  res.json(user);
+    res.status(201);
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
 };
 
 const show = async (req: Request, res: Response, next: NextFunction) => {
-  const user = await store.show(parseInt(req.params.id));
+  try {
+    const user = await store.show(parseInt(req.params.id));
 
-  if (!user) {
-    next(new AppError('User does not exist', 404, Reasons.ResourceNotFound));
-    return;
+    if (!user) {
+      throw new AppError('User does not exist', 404, Reasons.ResourceNotFound);
+    }
+
+    res.json(user);
+  } catch (err) {
+    next(err);
   }
-
-  res.json(user);
 };
 
 const tokenSecret = process.env.TOKEN_SECRET ?? '';

@@ -26,29 +26,44 @@ const productRoutes = (app: express.Application) => {
   );
 };
 
-const index = async (_req: Request, res: Response) => {
-  const products = await store.index();
-  res.json(products);
+const index = async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const products = await store.index();
+    res.json(products);
+  } catch (err) {
+    next(err);
+  }
 };
 
-const create = async (req: Request, res: Response) => {
-  const product = await store.create({
-    name: req.body.name,
-    price: req.body.price
-  });
-  res.status(201);
-  res.json(product);
+const create = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const product = await store.create({
+      name: req.body.name,
+      price: req.body.price
+    });
+    res.status(201);
+    res.json(product);
+  } catch (err) {
+    next(err);
+  }
 };
 
 const show = async (req: Request, res: Response, next: NextFunction) => {
-  const product = await store.show(parseInt(req.params.id));
+  try {
+    const product = await store.show(parseInt(req.params.id));
 
-  if (!product) {
-    next(new AppError('Product does not exist', 404, Reasons.ResourceNotFound));
-    return;
+    if (!product) {
+      throw new AppError(
+        'Product does not exist',
+        404,
+        Reasons.ResourceNotFound
+      );
+    }
+
+    res.json(product);
+  } catch (err) {
+    next(err);
   }
-
-  res.json(product);
 };
 
 export default productRoutes;

@@ -71,16 +71,6 @@ These are the notes from a meeting with the frontend developer that describe wha
 | Password  | Varchar      |            |
 | Email     | Varchar(100) | UNIQUE     |
 
-### Users:
-
-| Column    | Type         | Constraint |
-| --------- | ------------ | ---------- |
-| Id        | Serial       | PrimaryKey |
-| FirstName | Varchar(200) |            |
-| LastName  | Varchar(200) |            |
-| Password  | Varchar      |            |
-| Email     | Varchar(100) | UNIQUE     |
-
 ### Orders:
 
 | Column   | Type        | Constraint           |
@@ -92,7 +82,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ### OrderProducts:
 
-| Column    | Type    | Constraint              |
-| --------- | ------- | ----------------------- |
+| Column    | Type    | Constraint                          |
+| --------- | ------- | ----------------------------------- |
 | OrderId   | Integer | PrimaryKey, REFERENCES Orders(Id)   |
 | ProductId | Integer | PrimaryKey, REFERENCES Products(Id) |

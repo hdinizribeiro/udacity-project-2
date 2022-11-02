@@ -42,7 +42,7 @@ describe('Products endpoint tests', () => {
     expect(response.body).toEqual(newProduct);
   });
 
-  it('Should return 404 and one product on GET /products/:id whan the product does not exist', async () => {
+  it('Should return 404 on GET /products/:id whan the product does not exist', async () => {
     // Arrange & Act
     const response = await request.get(`/products/1`);
 
