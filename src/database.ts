@@ -1,10 +1,16 @@
 import { Pool, QueryResult, QueryResultRow } from 'pg';
 import dotenv from 'dotenv';
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+if (process.env.NODE_ENV) {
+  dotenv.config({ override: true, path: `.env.${process.env.NODE_ENV}` });
+} else {
+  dotenv.config();
+}
 
 const { POSTGRES_HOST, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD } =
   process.env;
+
+console.log(`Db:${POSTGRES_DB}`);
 
 const dbClient = new Pool({
   host: POSTGRES_HOST,

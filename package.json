@@ -5,8 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "build": "npx tsc",
-    "start": "NODE_ENV=local node ./dist/server.js",
-    "watch": "NODE_ENV=local tsc-watch --onSuccess 'node ./dist/server.js'",
+    "start": "node ./dist/server.js",
+    "watch": "tsc-watch --onSuccess 'node ./dist/server.js'",
     "test": "npx tsc && (db-migrate db:create StorefrontDbTests || true) && NODE_ENV=test jasmine",
     "lint": "eslint 'src/**/*.ts'",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
