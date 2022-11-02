@@ -1,5 +1,5 @@
 import Client from '../../database';
-import { Order, OrderStatus, OrderStore } from '../orders';
+import { Order, OrderStatus, OrderStore } from '../order';
 import { ProductStore } from '../product';
 import { UserStore } from '../user';
 
@@ -8,7 +8,7 @@ const productStore = new ProductStore();
 const userStore = new UserStore();
 
 describe('Product Store Tests', () => {
-  it('Should user current orders', async () => {
+  it('Should return user current orders', async () => {
     // Arrange
     const product1 = await productStore.create({
       name: 'product 1',

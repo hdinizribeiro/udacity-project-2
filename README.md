@@ -52,3 +52,56 @@ Add JWT functionality as shown in the course. Make sure that JWTs are required f
 Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
 
 Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+
+## Scripts
+
+### Build
+
+`yarn build`: Builds the application into javascript
+
+### Start
+
+`yarn start`: Starts the application after build, it deppends on the build command
+
+### Watch
+
+`yarn watch`: Build and start the application on watch mode
+
+### Test
+
+`yarn test`: Runs all jasmine tests
+
+### Lint
+
+`yarn lint`: Run lint in all .ts files
+
+### Prettier
+
+`yarn prettier`: Writes the prettier defined style on all .ts files
+
+### Migrate
+
+`yarn migrate`: Creates the database and runs all migrations
+
+## Environment setup
+
+To start working on this project it's necessary to install some tools:
+* [**Docker**](https://docs.docker.com/get-docker/)
+* [**Node 16.18.0**](https://nodejs.org/dist/v16.18.0/): Select the compatible version for your OS
+* **Yarn**: Install with command `npm i -g yarn`
+
+
+After install tools follow thes steps:
+
+1. Navigate to the root of the project
+2. Run the command `docker compose up -d`
+3. Still on the root of the project, run the command `yarn migrate`
+4. Create a `.env` file on the root of the project, use .envTemplate file to check the necessary environment variables.
+5. Run `yarn test` to check if all tests are passing
+6. Run `yarn watch` to start the application in watch mode
+
+## Additional info for the reviewer
+
+In the user api I included `POST /users/authenticate` endpoint to generate the jwt token, to accomplish that I also had to include the "Email" of the user in the User data shape, because it's necessary to have a unique information to check password.
+
+Also notice that none of the endpoints exposes the hashed password.

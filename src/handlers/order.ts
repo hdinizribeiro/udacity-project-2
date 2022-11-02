@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { validate } from '../middlewares/validation/validationMiddleware';
 import { routeNumericIdSchema } from '../utilities/validatorSchemas';
 import { jwtValidationMiddleware } from '../middlewares/validation/jwtValidationMiddleware';
-import { OrderStatus, OrderStore } from '../models/orders';
+import { OrderStatus, OrderStore } from '../models/order';
 
 const store = new OrderStore();
 

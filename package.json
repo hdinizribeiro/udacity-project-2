@@ -5,12 +5,12 @@
   "main": "server.ts",
   "scripts": {
     "build": "npx tsc",
-    "start": "NODE_ENV=local node src/server.ts",
+    "start": "NODE_ENV=local node ./dist/server.js",
     "watch": "NODE_ENV=local tsc-watch --onSuccess 'node ./dist/server.js'",
     "test": "npx tsc && (db-migrate db:create StorefrontDbTests || true) && NODE_ENV=test jasmine",
-    "tsc": "tsc",
     "lint": "eslint 'src/**/*.ts'",
-    "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write"
+    "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
+    "migrate": "(db-migrate db:create StorefrontDb || true) && db-migrate up"
   },
   "author": "Udacity",
   "license": "ISC",

@@ -1,0 +1,7 @@
+POSTGRES_HOST=localhost
+POSTGRES_DB=StorefrontDb
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+BCRYPT_SALT_ROUNDS=1
+BCRYPT_PEPER=localpeper
+TOKEN_SECRET=localtokensecret
