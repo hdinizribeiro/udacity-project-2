@@ -61,11 +61,11 @@ Before submitting your project, spin it up and test each endpoint. If each one r
 
 ### Start
 
-`yarn start`: Starts the application after build, it deppends on the build command
+`yarn start`: Starts the application on port 3000 after build, it deppends on the build command
 
 ### Watch
 
-`yarn watch`: Build and start the application on watch mode
+`yarn watch`: Build and start the application on watch mode running on port 3000
 
 ### Test
 
@@ -94,11 +94,14 @@ To start working on this project it's necessary to install some tools:
 After install tools follow thes steps:
 
 1. Navigate to the root of the project
-2. Run the command `docker compose up -d`
+2. Run the command `docker compose up -d`. 
+    
+    **Note**: This command will run a local postgres database on port 5432 with these credentials: User: postgres, Password: postgres
+
 3. Still on the root of the project, run the command `yarn migrate`
 4. Create a `.env` file on the root of the project, use .envTemplate file to check the necessary environment variables.
 5. Run `yarn test` to check if all tests are passing
-6. Run `yarn watch` to start the application in watch mode
+6. Run `yarn watch` to start the application in watch mode on port 300
 
 ## Additional info for the reviewer
 
