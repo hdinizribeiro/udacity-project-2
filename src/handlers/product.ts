@@ -17,13 +17,13 @@ const createProductSchema = yup.object().shape({
 
 const productRoutes = (app: express.Application) => {
   app.get('/products', index);
-  app.post('/products', validate(createProductSchema), create);
-  app.get(
-    '/products/:id',
+  app.post(
+    '/products',
     jwtValidationMiddleware,
-    validate(routeNumericIdSchema),
-    show
+    validate(createProductSchema),
+    create
   );
+  app.get('/products/:id', validate(routeNumericIdSchema), show);
 };
 
 const index = async (_req: Request, res: Response, next: NextFunction) => {

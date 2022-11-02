@@ -58,6 +58,11 @@ describe('Products endpoint tests', () => {
 
     // Assert
     expect(response.statusCode).toBe(201);
+    expect(response.body).toEqual({
+      id: response.body.id,
+      name: 'new-product',
+      price: '10'
+    });
   });
 
   it('Should return 400 when GET /products/:id receives invalid id', async () => {
@@ -94,6 +99,18 @@ describe('Products endpoint tests', () => {
         }
       ],
       statusCode: 400
+    });
+  });
+
+  describe('Unauthorize tests', () => {
+    it('Should return 401 the auth token was not provided', async () => {
+      // Arrange & Act
+      const responseCreate = await request
+        .post(`/products`)
+        .set('Authorization', '');
+
+      // Assert
+      expect(responseCreate.status).toBe(401);
     });
   });
 });

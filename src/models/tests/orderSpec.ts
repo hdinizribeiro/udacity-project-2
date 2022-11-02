@@ -53,4 +53,40 @@ describe('Product Store Tests', () => {
       }
     ]);
   });
+
+  it('Should not return orders other than the given status', async () => {
+    // Arrange
+    const product = await productStore.create({
+      name: 'product 1',
+      price: '20.75'
+    });
+
+    const user = await userStore.create({
+      firstname: 'user',
+      lastname: 'test',
+      email: 'user@email.com',
+      password: 'pass'
+    });
+
+    const order = (
+      await Client.execute<Order>(
+        'INSERT INTO Orders (Quantity, UserId, Status) VALUES ($1,$2,$3) RETURNING *',
+        [20, user.id, OrderStatus.Complete]
+      )
+    ).rows[0];
+
+    await Client.execute(
+      'INSERT INTO OrderProducts (OrderId, ProductId) VALUES ($1,$2)',
+      [order.id, product.id]
+    );
+
+    // Act
+    const result = await sutOrderStore.userOrders(
+      user.id ?? 0,
+      OrderStatus.Active
+    );
+
+    // Assert
+    expect(result).toEqual([]);
+  });
 });

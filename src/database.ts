@@ -10,8 +10,6 @@ if (process.env.NODE_ENV) {
 const { POSTGRES_HOST, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD } =
   process.env;
 
-console.log(`Db:${POSTGRES_DB}`);
-
 const dbClient = new Pool({
   host: POSTGRES_HOST,
   database: POSTGRES_DB,

@@ -162,4 +162,21 @@ describe('Users endpoint tests', () => {
     // Assert
     expect(response.statusCode).toBe(401);
   });
+
+  describe('Unauthorize tests', () => {
+    it('Should return 401 the auth token was not provided', async () => {
+      // Arrange & Act
+      const responseIndex = await request
+        .get(`/users`)
+        .set('Authorization', '');
+
+      const responseShow = await request
+        .get(`/users/1`)
+        .set('Authorization', '');
+
+      // Assert
+      expect(responseIndex.status).toBe(401);
+      expect(responseShow.status).toBe(401);
+    });
+  });
 });
